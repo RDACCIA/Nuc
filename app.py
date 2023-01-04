@@ -82,7 +82,7 @@ def get_sentence_in_para(p, text):
         if text in s:
             return s
 
-def show_pdf_mongo(file_data, db, fs):
+def show_pdf_mongo(file_data):
     base64_pdf = base64.b64encode(file_data).decode('utf-8')
     pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="800" height="800" type="application/pdf"></iframe>'
     st.markdown(pdf_display, unsafe_allow_html=True)
@@ -120,4 +120,6 @@ if user_input :
     # display the latest message
     with placeholder_bot.container():
         message(st.session_state.message_history[-1], is_user=False, key='last_answer')
+        message(f"Réponse extraite du document {selected_doc}", is_user=False, key='selected_doc')
+        show_pdf_mongo(selected_doc_data)
 
