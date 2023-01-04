@@ -5,6 +5,7 @@ import streamlit.components.v1 as components
 from streamlit_chat import message
 import pandas as pd
 import numpy as np
+import fitz
 # from googletrans import Translator
 
 from pymongo import MongoClient
@@ -88,7 +89,6 @@ def show_pdf_mongo(file_data):
     st.markdown(pdf_display, unsafe_allow_html=True)
 
 
-
 # Laoding bot with transformer model*
 with st.spinner("Chargement de la page ..."):
     qna_model = load_qna_model()
@@ -121,5 +121,11 @@ if user_input :
     with placeholder_bot.container():
         message(st.session_state.message_history[-1], is_user=False, key='last_answer')
         message(f"Réponse extraite du document {selected_doc}", is_user=False, key='selected_doc')
-        show_pdf_mongo(selected_doc_data)
+
+        st.download_button(
+            label="Download PDF",
+            data=selected_doc_data,
+            file_name=selected_doc,
+            mime='application/octet-stream',
+)
 
